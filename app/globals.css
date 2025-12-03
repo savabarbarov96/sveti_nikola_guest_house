@@ -1,26 +1,102 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Hand-Drawn Color Palette */
+  --background: #fdfbf7;
+  --foreground: #2d2d2d;
+  --muted: #e5e0d8;
+  --accent: #ff4d4d;
+  --border: #2d2d2d;
+  --secondary-accent: #2d5da1;
+
+  /* Wobbly Border Radius Values */
+  --radius-wobbly: 255px 15px 225px 15px / 15px 225px 15px 255px;
+  --radius-wobbly-md: 185px 25px 165px 35px / 35px 165px 25px 185px;
+  --radius-wobbly-sm: 125px 15px 105px 25px / 25px 105px 15px 125px;
 }
 
 @theme inline {
+  /* Colors */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-border: var(--border);
+  --color-secondary: var(--secondary-accent);
+
+  /* Typography - will be set via Google Fonts */
+  --font-heading: var(--font-kalam);
+  --font-body: var(--font-patrick-hand);
+
+  /* Custom Border Radius */
+  --radius-wobbly: 255px 15px 225px 15px / 15px 225px 15px 255px;
+  --radius-wobbly-md: 185px 25px 165px 35px / 35px 165px 25px 185px;
+  --radius-wobbly-sm: 125px 15px 105px 25px / 25px 105px 15px 125px;
 }
 
+/* Remove dark mode */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #fdfbf7;
+    --foreground: #2d2d2d;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-patrick-hand), "Patrick Hand", cursive;
+
+  /* Paper texture - dot pattern */
+  background-image: radial-gradient(#e5e0d8 1px, transparent 1px);
+  background-size: 24px 24px;
+  background-position: 0 0;
+}
+
+/* Utility classes for wobbly borders */
+.wobbly {
+  border-radius: var(--radius-wobbly);
+}
+
+.wobbly-md {
+  border-radius: var(--radius-wobbly-md);
+}
+
+.wobbly-sm {
+  border-radius: var(--radius-wobbly-sm);
+}
+
+/* Hard shadow utilities */
+.shadow-hard {
+  box-shadow: 4px 4px 0px 0px #2d2d2d;
+}
+
+.shadow-hard-lg {
+  box-shadow: 8px 8px 0px 0px #2d2d2d;
+}
+
+.shadow-hard-sm {
+  box-shadow: 2px 2px 0px 0px #2d2d2d;
+}
+
+/* Hover shadow reduction */
+.shadow-hard-hover:hover {
+  box-shadow: 2px 2px 0px 0px #2d2d2d;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Smooth transitions */
+* {
+  transition-duration: 100ms;
+  transition-timing-function: ease-out;
+}
+
+/* Heading styles */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-kalam), "Kalam", cursive;
+  font-weight: 700;
 }
