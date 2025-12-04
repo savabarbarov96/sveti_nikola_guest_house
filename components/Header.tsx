@@ -1,14 +1,29 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/language-context";
 
 export default function Header() {
   const { language, setLanguage, t } = useLanguage();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isMobileMenuOpen]);
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
+      setIsMobileMenuOpen(false); // Close mobile menu after navigation
     }
   };
 
@@ -30,8 +45,28 @@ export default function Header() {
           </span>
         </button>
 
-        {/* Navigation */}
-        <nav className="flex items-center gap-2 md:gap-4">
+        {/* Burger Menu Button - Mobile Only */}
+        <button
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          className="md:hidden flex flex-col gap-1.5 p-2 hover:rotate-3 transition-transform z-50"
+          aria-label="Toggle menu"
+        >
+          <span
+            className={`w-6 h-0.5 bg-foreground transition-all duration-300 ${isMobileMenuOpen ? "rotate-45 translate-y-2" : ""
+              }`}
+          />
+          <span
+            className={`w-6 h-0.5 bg-foreground transition-all duration-300 ${isMobileMenuOpen ? "opacity-0" : ""
+              }`}
+          />
+          <span
+            className={`w-6 h-0.5 bg-foreground transition-all duration-300 ${isMobileMenuOpen ? "-rotate-45 -translate-y-2" : ""
+              }`}
+          />
+        </button>
+
+        {/* Desktop Navigation - Hidden on Mobile */}
+        <nav className="hidden md:flex items-center gap-2 md:gap-4">
           <button
             onClick={() => scrollToSection("home")}
             className="text-xs md:text-sm hover:text-accent hover:rotate-1 transition-all relative group"
@@ -112,11 +147,10 @@ export default function Header() {
           <div className="flex gap-1 ml-2 border-2 border-foreground wobbly-sm p-1 bg-white">
             <button
               onClick={() => setLanguage("bg")}
-              className={`px-2 py-1 text-sm md:text-base transition-all ${
-                language === "bg"
+              className={`px-2 py-1 text-sm md:text-base transition-all ${language === "bg"
                   ? "bg-accent text-white"
                   : "bg-transparent text-foreground hover:bg-muted"
-              }`}
+                }`}
               style={{
                 borderRadius: "45px 25px 55px 15px / 15px 55px 25px 45px",
               }}
@@ -125,11 +159,112 @@ export default function Header() {
             </button>
             <button
               onClick={() => setLanguage("en")}
-              className={`px-2 py-1 text-sm md:text-base transition-all ${
-                language === "en"
+              className={`px-2 py-1 text-sm md:text-base transition-all ${language === "en"
                   ? "bg-accent text-white"
                   : "bg-transparent text-foreground hover:bg-muted"
-              }`}
+                }`}
+              style={{
+                borderRadius: "45px 25px 55px 15px / 15px 55px 25px 45px",
+              }}
+            >
+              EN
+            </button>
+          </div>
+        </nav>
+      </div>
+
+      {/* Mobile Menu Overlay */}
+      <div
+        className={`fixed inset-0 bg-white z-40 md:hidden transition-all duration-300 ${isMobileMenuOpen
+            ? "opacity-100 visible"
+            : "opacity-0 invisible"
+          }`}
+        style={{ top: "calc(4rem + 3px)" }} // Position below the header
+      >
+        <nav className="flex flex-col gap-6 p-8 h-full overflow-y-auto">
+          <button
+            onClick={() => scrollToSection("home")}
+            className="text-2xl hover:text-accent hover:rotate-1 transition-all text-left"
+          >
+            {t.nav.home}
+          </button>
+          <button
+            onClick={() => scrollToSection("features")}
+            className="text-2xl hover:text-accent hover:rotate-1 transition-all text-left"
+          >
+            {t.nav.features}
+          </button>
+
+          {/* Apartments Section */}
+          <div className="flex flex-col gap-3">
+            <div className="text-2xl font-bold text-foreground">
+              {t.nav.gallery}
+            </div>
+            <button
+              onClick={() => scrollToSection("mehana")}
+              className="text-xl hover:text-accent transition-all text-left pl-4"
+            >
+              {t.gallery.categories.mehana}
+            </button>
+            <button
+              onClick={() => scrollToSection("apartment1")}
+              className="text-xl hover:text-accent transition-all text-left pl-4"
+            >
+              {t.gallery.categories.apartment1}
+            </button>
+            <button
+              onClick={() => scrollToSection("apartment2")}
+              className="text-xl hover:text-accent transition-all text-left pl-4"
+            >
+              {t.gallery.categories.apartment2}
+            </button>
+            <button
+              onClick={() => scrollToSection("apartment3")}
+              className="text-xl hover:text-accent transition-all text-left pl-4"
+            >
+              {t.gallery.categories.apartment3}
+            </button>
+            <button
+              onClick={() => scrollToSection("apartment4")}
+              className="text-xl hover:text-accent transition-all text-left pl-4"
+            >
+              {t.gallery.categories.apartment4}
+            </button>
+          </div>
+
+          <button
+            onClick={() => scrollToSection("attractions")}
+            className="text-2xl hover:text-accent hover:rotate-1 transition-all text-left"
+          >
+            {t.nav.attractions}
+          </button>
+          <button
+            onClick={() => scrollToSection("contact")}
+            className="text-2xl hover:text-accent hover:rotate-1 transition-all text-left"
+          >
+            {t.nav.contact}
+          </button>
+
+          {/* Language Toggle - Mobile */}
+          <div className="flex gap-2 border-3 border-foreground wobbly-sm p-2 bg-white w-fit mt-4">
+            <button
+              onClick={() => setLanguage("bg")}
+              className={`px-4 py-2 text-lg transition-all ${language === "bg"
+                  ? "bg-accent text-white"
+                  : "bg-transparent text-foreground hover:bg-muted"
+                }`}
+              style={{
+                borderRadius: "45px 25px 55px 15px / 15px 55px 25px 45px",
+              }}
+            >
+              БГ
+            </button>
+            <button
+              onClick={() => setLanguage("en")}
+              className={`px-4 py-2 text-lg transition-all ${language === "en"
+                  ? "bg-accent text-white"
+                  : "bg-transparent text-foreground hover:bg-muted"
+                }`}
               style={{
                 borderRadius: "45px 25px 55px 15px / 15px 55px 25px 45px",
               }}

@@ -42,10 +42,18 @@
   }
 }
 
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-patrick-hand), "Patrick Hand", cursive;
+  overflow-x: hidden;
+  width: 100%;
 
   /* Paper texture - dot pattern */
   background-image: radial-gradient(#e5e0d8 1px, transparent 1px);
@@ -84,11 +92,6 @@ body {
   box-shadow: 2px 2px 0px 0px #2d2d2d;
 }
 
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}
-
 /* Smooth transitions */
 * {
   transition-duration: 100ms;
@@ -96,7 +99,12 @@ html {
 }
 
 /* Heading styles */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-kalam), "Kalam", cursive;
   font-weight: 700;
 }
